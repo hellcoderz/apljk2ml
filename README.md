@@ -1,7 +1,9 @@
 # apljk2ml
+
 Source to source convertor from J/K source to ML libraires source like tensorflow/keras/mxnet/pytorch etc.
 
-# Introduction
+## Introduction
+
 - the motive of this project is to create source to source convertor
 - Input language will be J or K (which are both decendant of APL)
 - Array programming languages work on with vectors/array and are terse and easy to express mathematical notation in code

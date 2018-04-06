@@ -301,21 +301,7 @@ def display(tokens, tabs=""):
         else:
             print tabs, token
 
-def parse_test():
-    exprs = [
-        (u"mean1=:(+/%#)1 2 3 4.5 'hello world' 5 E. i.10 (+/ 1 2 3 54.56)",
-            u"SYMBOL|VOCAB|BLOCK[VOCAB|VOCAB|VOCAB|VOCAB]|INT|INT|INT|FLOAT|STRING|INT|VOCAB|VOCAB|INT|BLOCK[VOCAB|VOCAB|INT|INT|INT|FLOAT]"),
-        (u"11 2 3 4.5", u"INT|INT|INT|FLOAT"),
-        (u"E.", u"VOCAB"),
-        (u"(+/%#)1 2 3 4 i.10 100", u"BLOCK[VOCAB|VOCAB|VOCAB|VOCAB]INT|INT|INT|INT|VOCAB|INT|INT"),
-        (u"(0 E. i.10) + ?2#10", u"BLOCK[INT|VOCAB|VOCAB|INT]|VOCAB|VOCAB|INT|VOCAB|INT"),
-        (u"1 2 3 4", u"INT|INT|INT|INT"),
-        (u"i.10 100 NB. +/ % #", u"VOCAB|INT|INT"),
-        (u"v=: ?. 20 $100     NB. a random vector", u"SYMBOL|VOCAB|VOCAB|INT|VOCAB|INT"),
-        (u"quicksort=: (($:@(<#[), (=#[), $:@(>#[)) ({~ ?@#)) ^: (1<#)",
-            u"SYMBOL|VOCAB|")
-    ]
-
+def parse_test(exprs):
     for expr in exprs:
         parsed = parse(expr[0])
     #     for token in parsed:
@@ -327,11 +313,32 @@ def parse_test():
 
 if __name__ == "__main__":
     import sys
-    expr = sys.argv[1]
 
-    print "Tokenizer Output:"
-    for token in tokenize(unicode(expr)):
-        print token
+    exprs = [
+        (u"mean1=:(+/%#)1 2 3 4.5 'hello world' 5 E. i.10 (+/ 1 2 3 54.56)",
+            u"SYMBOL|VOCAB|BLOCK[VOCAB|VOCAB|VOCAB|VOCAB]|INT|INT|INT|FLOAT|STRING|INT|VOCAB|VOCAB|INT|BLOCK[VOCAB|VOCAB|INT|INT|INT|FLOAT]"),
+        (u"11 2 3 4.5", u"INT|INT|INT|FLOAT"),
+        (u"E.", u"VOCAB"),
+        (u"(+/%#)1 2 3 4 i.10 100", u"BLOCK[VOCAB|VOCAB|VOCAB|VOCAB]INT|INT|INT|INT|VOCAB|INT|INT"),
+        (u"(0 E. i.10) + ?2#10", u"BLOCK[INT|VOCAB|VOCAB|INT]|VOCAB|VOCAB|INT|VOCAB|INT"),
+        (u"1 2 3 4", u"INT|INT|INT|INT"),
+        (u"i.10 100 NB. +/ % #", u"VOCAB|INT|INT"),
+        (u"v=: ?. 20 $100     NB. a random vector", u"SYMBOL|VOCAB|VOCAB|INT|VOCAB|INT"),
+        (u"quicksort=: (($:@(<#[), (=#[), $:@(>#[)) ({~ ?@#)) ^: (1<#)",
+            u"SYMBOL|VOCAB|BLOCK[BLOCK[VOCAB|VOCAB|BLOCK[VOCAB|VOCAB|VOCAB]|VOCAB|BLOCK[VOCAB|VOCAB|BLOCK[VOCAB|VOCAB|VOCAB]]|BLOCK[VOCAB|VOCAB|VOCAB|VOCAB]]|VOCAB|BLOCK[INT|VOCAB|VOCAB]]")
+    ]
 
-    print "\nParser Output:"
-    display(parse(unicode(expr)))
+    if len(sys.argv) == 2:
+        expr = sys.argv[1]
+
+        print "Tokenizer Output:"
+        for token in tokenize(unicode(expr)):
+            print token
+
+        print "\nParser Output:"
+        display(parse(unicode(expr)))
+    else:
+        parse_test(exprs)
+
+    print "\n=============================================================="
+    display(parse(exprs[8][0]))
